@@ -1,39 +1,34 @@
 
 import { resolve } from 'path'
 
+const someDefaultModule = resolve(__dirname, './helpers/example-module-prerender.js')
+
 let testInstance
 
-const imports = {
-  someDefaultModule: './test/helpers/example-module-alpha.js',
-  anotherDefaultModule: resolve(__dirname, `./helpers/example-module-beta.js`)
-}
-
-describe.skip('should generate an ECMAScript 6 module file with valid exports when calling addExportSync', function () {
-  beforeEach(async function () {
-    testInstance = await new CreateESM(TEST_FILE, TEST_FILE_TYPE, true)
+describe.skip(`import target modules as live bindings using "addImportSync"`, function () {
+  beforeEach(function () {
+    testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
   })
 
-  it('should have no exports until "addExportSync" is called', async function () {
-    const exported = await loadModule(TEST_FILE)
-
-    // if no valid exports will product "default: {}"
-
-    expect(Object.keys(exported)).to.have.lengthOf(1)
-    expect(Object.keys(exported)[0]).to.equal('default')
-    // eslint-disable-next-line no-unused-expressions
-    expect(Object.values(exported)[0]).to.be.an('object').that.is.empty
-  })
-
-  it('should have all exports as assigned modules', async function () {
-    for (const item in TEST_DATA) {
-      testInstance.addExportSync(item, TEST_DATA[item])
-    }
+  it('should be able to import named exports from target module', async function () {
+    await testInstance.addImportSync(someDefaultModule)
 
     const exported = await loadModule(TEST_FILE)
+    const targetedModule = await loadModule(someDefaultModule)
 
-    expect(Object.keys(exported)).to.have.lengthOf(Object.keys(TEST_DATA).length)
+    expect(Object.keys(exported)).to.have.lengthOf(Object.keys(targetedModule).length, 'does not match same amount keys as target module')
     for (const item of Object.keys(exported)) {
-      expect(Object.keys(TEST_DATA)).to.include(item)
+      expect(Object.keys(targetedModule)).to.include(item)
     }
+  })
+
+  it('should be able to import default export from target module', async function () {
+
+  })
+  it('should be able to import default export and named exports from target module', async function () {
+
+  })
+  it('should optionally validate import modules exist', async function () {
+
   })
 })

@@ -38,6 +38,7 @@
       "statSync",
       "readFileSync",
       "CreateESM",
+      "NON_STRINGS",
       "TEST_FILE",
       "TEST_FILE_TYPE",
       "TEST_DATA"

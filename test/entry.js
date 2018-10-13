@@ -12,9 +12,20 @@ import { expect } from 'chai'
 import { loadModule } from '../src/load-module.js'
 import { purgeGeneratedFile } from './helpers/purge-file.js'
 
-import CreateESM from '../src/build-esm-file.js'
+import RenderESM from '..'
 
+let TEST_FILE // to be reassigned (using `swap`) with each test.
 const TEST_FILE_TYPE = 'my generated file'
+
+const NON_STRINGS = Object.freeze([
+  function () {
+    return 'something'
+  },
+  51232,
+  null,
+  [1, 2, '3'],
+  { key: 'value' }
+])
 
 const someArrowFunction = () => 'Leggings taxidermy ennui.'
 const TEST_DATA = Object.freeze({
@@ -50,20 +61,29 @@ before('Assigning functions as global properties.', async () => {
     loadModule,
     statSync,
     readFileSync,
-    CreateESM,
+    RenderESM,
+    NON_STRINGS,
     TEST_FILE_TYPE,
-    TEST_DATA
+    TEST_DATA,
+    TEST_FILE
   }
   /** Assign global variables
     * @see {@link} https://www.npmjs.com/package/swap-global
     */
   for (const property in definitions) {
-    console.log(`defining ${property} as global.`)
+    console.log(`defining "${property}" as global.`)
     swap(property, definitions[property])
   }
+
+  console.log(`
+
+Starting tests...
+
+================================================================================
+
+    `)
 })
 
-let TEST_FILE
 let count = 0
 // create a uniquely named file for each test so
 // it is not cached by dynamic imports
@@ -73,13 +93,19 @@ beforeEach(function () {
 })
 
 // remove from file system
-// afterEach(`removing generated files from last test`, function () {
-//   // purge before we retest
-//   purgeGeneratedFile(TEST_FILE)
-// })
+afterEach(`removing generated files from last test`, function () {
+  // purge before we retest
+  purgeGeneratedFile(TEST_FILE)
+})
 
 /** After all test cases are complete. */
 after('Reverting global properties.', async () => {
   /** Restore global variables. */
   await restore()
+
+  console.log(`
+
+================================================================================
+
+    `)
 })

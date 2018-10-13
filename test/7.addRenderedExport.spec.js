@@ -1,23 +1,20 @@
 
 import { resolve } from 'path'
 
+const someDefaultModule = resolve(__dirname, './helpers/example-module-prerender.js')
+
 let testInstance
 
-const imports = {
-  someDefaultModule: resolve(__dirname, './helpers/example-module-prerender.js'),
-  anotherDefaultModule: resolve(__dirname, `./helpers/example-module-alpha.js`)
-}
-
-describe('should generate an ECMAScript 6 module file with valid exports when calling addExportSync', function () {
-  beforeEach(async function () {
-    testInstance = await new CreateESM(TEST_FILE, TEST_FILE_TYPE, true)
+describe('generate static exports when calling "addRenderedExport"', function () {
+  beforeEach(function () {
+    testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
   })
 
   it('should have all exports as assigned module if not specified in second param of addRenderedExport', async function () {
-    await testInstance.addRenderedExport(imports.someDefaultModule)
+    await testInstance.addRenderedExport(someDefaultModule)
 
     const exported = await loadModule(TEST_FILE)
-    const targetedModule = await loadModule(imports.someDefaultModule)
+    const targetedModule = await loadModule(someDefaultModule)
 
     expect(Object.keys(exported)).to.have.lengthOf(Object.keys(targetedModule).length, 'does not match same amount keys as target module')
     for (const item of Object.keys(exported)) {
@@ -26,11 +23,11 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
   })
   it('should have selected exports as assigned module if specified in second param of addRenderedExport', async function () {
     const selectedExport = 'renderedString'
-    await testInstance.addRenderedExport(imports.someDefaultModule, [selectedExport])
+    await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
 
     const exported = await loadModule(TEST_FILE)
 
-    const targetedModule = await loadModule(imports.someDefaultModule)
+    const targetedModule = await loadModule(someDefaultModule)
 
     expect(exported[selectedExport]).to.equal(targetedModule[selectedExport], 'should match value of target module')
     // get non-selected keys from targetedModule and confirm they are not in exported
@@ -40,11 +37,11 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
   })
   it('should have selected export without dependencies module', async function () {
     const selectedExport = 'renderedString'
-    await testInstance.addRenderedExport(imports.someDefaultModule, [selectedExport])
+    await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
 
     let file
     try {
-      file = readFileSync(imports.someDefaultModule)
+      file = readFileSync(someDefaultModule)
     } catch (err) {
       file = err
     }

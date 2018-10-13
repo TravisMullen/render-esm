@@ -13,7 +13,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
 
       try {
         stats = statSync(TEST_FILE)
@@ -21,11 +21,11 @@ describe(`class ${name} generating new file`, function () {
         stats = err
       }
 
-      expect(createESM).to.be.an.instanceof(CreateESM)
+      expect(renderESM).to.be.an.instanceof(RenderESM)
       expect(stats).to.be.a('object', 'file was expected to be created.')
     })
     it('should a header that matches the second argument', function () {
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
 
       let file
       try {
@@ -34,11 +34,11 @@ describe(`class ${name} generating new file`, function () {
         file = err
       }
 
-      expect(createESM).to.be.an.instanceof(CreateESM)
+      expect(renderESM).to.be.an.instanceof(RenderESM)
       expect(file.toString()).to.include(TEST_FILE_TYPE, `file should contain header with ${TEST_FILE_TYPE} (second argument in constructor)`)
     })
   })
-  describe('should construct class and not call resetModuleSync with falsy third argument', function () {
+  describe('should construct class and call resetModuleSync with truthy third argument', function () {
     it('should create an ECMAScript 6 module file', function () {
       let stats
       try {
@@ -49,7 +49,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE, true)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
 
       try {
         stats = statSync(TEST_FILE)
@@ -57,10 +57,12 @@ describe(`class ${name} generating new file`, function () {
         stats = err
       }
 
-      expect(createESM).to.be.an.instanceof(CreateESM)
+      expect(renderESM).to.be.an.instanceof(RenderESM)
       expect(stats).to.be.a('object', 'file was expected to be created.')
     })
     it('should create an ECMAScript 6 module file when resetModuleSync manually called', function () {
+      // not sure if this test is adding value, but I'm gonna leave it as a control
+
       let stats
       try {
         stats = statSync(TEST_FILE)
@@ -70,7 +72,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE, true)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
 
       try {
         stats = statSync(TEST_FILE)
@@ -80,7 +82,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('object', 'file was expected to be created.')
 
-      createESM.resetModuleSync()
+      renderESM.resetModuleSync()
 
       try {
         stats = statSync(TEST_FILE)
@@ -102,7 +104,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE, false)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, false)
 
       try {
         stats = statSync(TEST_FILE)
@@ -110,7 +112,7 @@ describe(`class ${name} generating new file`, function () {
         stats = err
       }
 
-      expect(createESM).to.be.an.instanceof(CreateESM)
+      expect(renderESM).to.be.an.instanceof(RenderESM)
       expect(stats).to.be.a('error', 'file should not have been created!')
     })
     it('should create an ECMAScript 6 module file when resetModuleSync manually called', function () {
@@ -123,7 +125,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE, false)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, false)
 
       try {
         stats = statSync(TEST_FILE)
@@ -133,7 +135,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'file should not have been created, yet!')
 
-      createESM.resetModuleSync()
+      renderESM.resetModuleSync()
 
       try {
         stats = statSync(TEST_FILE)
@@ -153,7 +155,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'control test. file already exists!')
 
-      const createESM = new CreateESM(TEST_FILE, TEST_FILE_TYPE, false)
+      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, false)
 
       try {
         stats = statSync(TEST_FILE)
@@ -163,7 +165,7 @@ describe(`class ${name} generating new file`, function () {
 
       expect(stats).to.be.a('error', 'file should not have been created, yet!')
 
-      await createESM.resetModule()
+      await renderESM.resetModule()
 
       try {
         stats = statSync(TEST_FILE)

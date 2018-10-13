@@ -2,9 +2,9 @@ import pkg from './package.json';
 
 const external = [
 	...Object.keys(pkg.dependencies),
+	// 'path',
 	'fs',
-	'child_process',
-	'path'
+	'child_process'
 ]
 
 export default {

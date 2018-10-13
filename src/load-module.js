@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 export const loadModule = async fileName => {
   let res

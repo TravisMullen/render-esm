@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 'use strict'
 
+const program = require('commander')
+const Mocha = require('../')
+
 const { spawn } = require('child_process')
 const path = require('path')
+const args = [path.join(__dirname, main)]
 
-const proc = spawn(process.execPath, [path.resolve(__dirname, '../dist/base64toESM.cjs.js'), ...process.argv.slice(2)], {
+const proc = spawn(process.execPath, args, {
   stdio: 'inherit'
 })
 
