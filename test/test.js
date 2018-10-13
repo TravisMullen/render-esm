@@ -270,7 +270,7 @@ describe(`class ${name} generating new file`, function () {
         // control check
         expect(uniqueTypeCounts).not.to.include(expectedTypes)
         uniqueTypeCounts.push(expectedTypes)
-        
+
         // eslint-disable-next-line valid-typeof
         const foundTypes = Object.values(exported).filter(i => typeof (i) === toCheck).length
         expect(foundTypes.length).to.equal(expectedTypes.length)

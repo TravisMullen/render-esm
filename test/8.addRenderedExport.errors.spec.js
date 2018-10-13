@@ -27,19 +27,19 @@ describe.skip(`failure to "addRenderedExport"`, function () {
   it('should throw Error if first argument not a typeof string', async function () {
     for (const badType of NON_STRINGS) {
       const badFn = badContructorFirstArgument(badType)
-      expect(badFn).to.throw(TypeError, /String/, `typeof ${typeof (badType)} should throw TypeError`)
+      expect(badFn).to.throw(TypeError, /string/, `typeof ${typeof (badType)} should throw TypeError`)
     }
   })
 
   it.skip('should throw Error if second argument not an Array', async function () {
     const testString = 'some string jawn.'
-    expect(badContructorSecondArgument(testString)).to.throw(TypeError, /String/, `typeof ${typeof (badType)} should throw TypeError`)
+    expect(badContructorSecondArgument(testString)).to.throw(TypeError, /string/, `typeof ${typeof (badType)} should throw TypeError`)
     for (const badType of NON_STRINGS) {
       // there is an Array in the test data
       // and its mixed type and will fail
       // but that is the next test, so lets seperate concerns
       if (!Array.isArray(badType)) {
-        expect(badContructorSecondArgument(badType)).to.throw(TypeError, /String/, `typeof ${typeof (badType)} should throw TypeError`)
+        expect(badContructorSecondArgument(badType)).to.throw(TypeError, /string/, `typeof ${typeof (badType)} should throw TypeError`)
       }
     }
   })
@@ -47,7 +47,7 @@ describe.skip(`failure to "addRenderedExport"`, function () {
   it.skip('should throw Error if second arguments Array contains non-Strings', async function () {
     for (const badType of NON_STRINGS) {
       const testArray = [badType]
-      expect(badContructorSecondArgument(testArray)).to.throw(TypeError, /String/, `typeof ${typeof (badType)} should throw TypeError`)
+      expect(badContructorSecondArgument(testArray)).to.throw(TypeError, /string/, `typeof ${typeof (badType)} should throw TypeError`)
     }
   })
 

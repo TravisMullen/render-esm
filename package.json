@@ -25,6 +25,7 @@
     "prebuild": "npm run lint",
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "pretest": "npm run lint && npm run build",
     "test": "mocha --require babel-core/register --reporter spec ./test/entry.js --recursive './test/*.spec.*'",
     "test:purge": "rm ./test/some-test*",
     "lint": "standard --fix './{src,test,bin}/**/*.js' --verbose | snazzy"
@@ -33,11 +34,11 @@
     "parser": "babel-eslint",
     "env": [ "mocha" ],
     "globals": [
+      "RenderESM",
       "expect",
       "loadModule",
       "statSync",
       "readFileSync",
-      "CreateESM",
       "NON_STRINGS",
       "TEST_FILE",
       "TEST_FILE_TYPE",
