@@ -1,8 +1,8 @@
 {
-  "name": "base64-to-esm",
+  "name": "render-esm",
   "version": "1.0.0",
-  "main": "dist/base64toESM.cjs.js",
-  "module": "dist/base64toESM.esm.js",
+  "main": "dist/render-esm.cjs.js",
+  "module": "dist/render-esm.mjs",
   "dependencies": {
     "camelcase": "^5.0.0",
     "glob": "^7.1.3"
@@ -30,7 +30,18 @@
     "lint": "standard --fix './{src,test,bin}/**/*.js' --verbose | snazzy"
   },
   "standard": {
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "env": [ "mocha" ],
+    "globals": [
+      "expect",
+      "loadModule",
+      "statSync",
+      "readFileSync",
+      "CreateESM",
+      "TEST_FILE",
+      "TEST_FILE_TYPE",
+      "TEST_DATA"
+    ]
   },
   "babel": {
     "presets": [
@@ -48,6 +59,6 @@
     "bin"
   ],
   "bin": {
-    "base64toESM": "./bin/base64toESM"
+    "render-esm": "./bin/render-esm"
   }
 }

@@ -1,10 +1,14 @@
 import { writeFileSync, writeFile } from 'fs'
 import camelcase from 'camelcase'
 
+import { loadModule } from './load-module.js'
+
 const resetModule = moduleName => {
   return [`/** ${moduleName} exports as es6 module */`, { flag: 'w' }]
 }
 
+/** @todo add validateModule = true */
+/** @todo maintain queue of imports and call a final render of exports */
 const addImport = (submodules, moduleName) => {
   // create JavaScript safe variable name
   const namedImport = camelcase(moduleName)
@@ -15,9 +19,15 @@ import { ${Array.isArray(submodules) ? submodules.join(', ') : submodules} } fro
   return [fileAddition, { flag: 'a' }]
 }
 
+const defaultName = 'theDefaultExport'
 const addExport = (key, value) => {
-  // create JavaScript safe variable name
-  const namedExport = camelcase(key)
+  let namedExport
+  if (key === 'default') {
+    namedExport = defaultName
+  } else {
+    // create JavaScript safe variable name
+    namedExport = camelcase(key)
+  }
 
   let exportValueAsString
   // check type, dont assume is a string
@@ -32,24 +42,30 @@ const addExport = (key, value) => {
 
   let fileAddition
   if (typeof (value) === 'function') {
-    // exportValue = value.toString()
-    // if (exportValue.includes('function')) {
-    //   exportValue = value.toString()
-    //     .replace('function ', '')
-    // }
-    // exportValue = value.toString()
-    //   .replace(')', ') =>')
     fileAddition = `
 export ${value.toString()}
-  `
+`
   } else {
     fileAddition = `
 export const ${namedExport} = ${exportValueAsString || value}
-  `
+`
+  }
+
+  if (namedExport === defaultName) {
+    fileAddition = fileAddition
+      .replace('export ', '')
+    if (typeof (value) === 'function') {
+      fileAddition = fileAddition.concat(`
+export default ${value.toString().match(/(?<=function )(.*)(?=\()/g)}
+`)
+    } else {
+      fileAddition = fileAddition.concat(`
+export default ${defaultName}
+`)
+    }
   }
 
   // add definition to file
-
   return [fileAddition, { flag: 'a' }]
 }
 
@@ -63,23 +79,20 @@ export { ${Array.isArray(submodules) ? submodules.join(', ') : submodules} }
 }
 
 class CreateESM {
-  constructor (moduleFile, moduleType, resetModule = false) {
+  constructor (moduleFile, moduleType, resetModule = true) {
     if (typeof (moduleFile) !== 'string') {
-      throw new TypeError('first argument is not a valid file path [string]')
+      throw new TypeError('first argument is not a valid file path <String>')
     }
     if (typeof (moduleType) !== 'string') {
-      throw new TypeError('second argument is not a valid file extension or substring [string]')
+      throw new TypeError('second argument is not a valid file extension or substring <String>')
     }
 
+    this.renderedExports = []
     this._moduleFile = moduleFile
     this._moduleType = moduleType
 
     if (resetModule) {
-      // if (resetModule === 'sync') {
-      return this.resetModuleSync()
-      // } else {
-      // return this.resetModule()
-      // }
+      this.resetModuleSync()
     }
   }
 
@@ -119,6 +132,32 @@ class CreateESM {
     })
   }
 
+  async addRenderedExport (pathToModule, selectedExports = []) {
+    if (typeof (pathToModule) !== 'string') {
+      throw new TypeError('first argument is not a valid file path <String>')
+    }
+
+    console.log(Array.isArray(selectedExports), selectedExports)
+
+    console.log(selectedExports.length, Object.values(selectedExports).filter(i => typeof (i) !== 'string').length)
+    if (!Array.isArray(selectedExports)) {
+      throw new TypeError('second argument should be Array of Strings <String[]>')
+    }
+
+    if (selectedExports.length && Object.values(selectedExports).filter(i => typeof (i) !== 'string').length) {
+      throw new TypeError('second argument contains a non-String in its Array <String[]>')
+    }
+
+    const rendered = await loadModule(pathToModule)
+
+    for (const item in rendered) {
+      this.renderedExports.push({
+        [item]: rendered[item]
+      })
+      await this.addExport(item, rendered[item])
+    }
+  }
+
   addExportSync (key, value) {
     const args = addExport(key, value)
     writeFileSync(this._moduleFile, ...args)
@@ -126,7 +165,6 @@ class CreateESM {
 
   addExport (key, value) {
     const args = addExport(key, value)
-    console.log('args', args)
     return new Promise((resolve, reject) => {
       writeFile(this._moduleFile, ...args, err => {
         if (err) {

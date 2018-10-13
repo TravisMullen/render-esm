@@ -9,8 +9,8 @@ import { resolve } from 'path'
 import { readFileSync, statSync } from 'fs'
 import { expect } from 'chai'
 
-import { loadModule } from './load-module.js'
-import { purgeGeneratedFile } from './purge-file.js'
+import { loadModule } from '../src/load-module.js'
+import { purgeGeneratedFile } from './helpers/purge-file.js'
 
 import CreateESM from '../src/build-esm-file.js'
 
