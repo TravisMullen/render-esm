@@ -98,4 +98,78 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
       expect(foundTypes.length).to.equal(expectedTypes.length)
     }
   })
+
+    it('should be able to assign a string as a single default export', async function () {
+    const exportName = 'default'
+    const exportValue = TEST_DATA.someString
+
+    await testInstance.addExport(exportName, exportValue)
+
+    const exported = await loadModule(TEST_FILE)
+
+    expect(Object.values(exported)).to.have.lengthOf(1)
+    expect(exported[exportName]).to.equal(exportValue)
+  })
+
+  it('should be able to assign a function as a default export with other named exports', async function () {
+    const defaultExportTarget = 'someFunction'
+    const defaultExportName = 'default'
+
+    for (const item in TEST_DATA) {
+      // make someString the default
+      if (item === defaultExportTarget) {
+        await testInstance.addExport(defaultExportName, TEST_DATA[item])
+      } else {
+        await testInstance.addExport(item, TEST_DATA[item])
+      }
+    }
+
+    const exported = await loadModule(TEST_FILE)
+
+    expect(Object.values(exported)).to.have.lengthOf(Object.values(TEST_DATA).length)
+
+    const someArgumentValue = 'hello world'
+    for (const item in TEST_DATA) {
+      if (item === defaultExportTarget) {
+        expect(TEST_DATA[defaultExportTarget](someArgumentValue)).to.equal(exported[defaultExportName](someArgumentValue))
+      } else {
+        if (typeof (TEST_DATA[item]) === 'function') {
+          expect(TEST_DATA[item](someArgumentValue)).to.equal(exported[item](someArgumentValue))
+        } else {
+          expect(TEST_DATA[item]).to.equal(exported[item])
+        }
+      }
+    }
+  })
+
+  it('should be able to assign a string as a default export with other named exports', async function () {
+    const defaultExportTarget = 'someString'
+    const defaultExportName = 'default'
+
+    for (const item in TEST_DATA) {
+      // make someString the default
+      if (item === defaultExportTarget) {
+        await testInstance.addExport(defaultExportName, TEST_DATA[item])
+      } else {
+        await testInstance.addExport(item, TEST_DATA[item])
+      }
+    }
+
+    const exported = await loadModule(TEST_FILE)
+
+    expect(Object.values(exported)).to.have.lengthOf(Object.values(TEST_DATA).length)
+
+    const someArgumentValue = 'hello world'
+    for (const item in TEST_DATA) {
+      if (item === defaultExportTarget) {
+        expect(TEST_DATA[defaultExportTarget]).to.equal(exported[defaultExportName])
+      } else {
+        if (typeof (TEST_DATA[item]) === 'function') {
+          expect(TEST_DATA[item](someArgumentValue)).to.equal(exported[item](someArgumentValue))
+        } else {
+          expect(TEST_DATA[item]).to.equal(exported[item])
+        }
+      }
+    }
+  })
 })
