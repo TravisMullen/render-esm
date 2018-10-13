@@ -26,7 +26,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "mocha --require babel-core/register --reporter spec ./test/entry.js --recursive './test/*.spec.*'",
-    "test:local": "./bin/base64toESM --target=txt --path=./test/clean-files",
+    "test:purge": "rm ./test/some-test*",
     "lint": "standard --fix './{src,test,bin}/**/*.js' --verbose | snazzy"
   },
   "standard": {

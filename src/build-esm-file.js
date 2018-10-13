@@ -137,14 +137,14 @@ class CreateESM {
       throw new TypeError('first argument is not a valid file path <String>')
     }
 
-    console.log(Array.isArray(selectedExports), selectedExports)
-
-    console.log(selectedExports.length, Object.values(selectedExports).filter(i => typeof (i) !== 'string').length)
     if (!Array.isArray(selectedExports)) {
       throw new TypeError('second argument should be Array of Strings <String[]>')
     }
 
-    if (selectedExports.length && Object.values(selectedExports).filter(i => typeof (i) !== 'string').length) {
+    if (selectedExports.length &&
+      Object.values(selectedExports)
+        .filter(i => typeof (i) !== 'string')
+        .length) {
       throw new TypeError('second argument contains a non-String in its Array <String[]>')
     }
 

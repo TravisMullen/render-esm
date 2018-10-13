@@ -64,18 +64,19 @@ before('Assigning functions as global properties.', async () => {
 })
 
 let TEST_FILE
+let count = 0
 // create a uniquely named file for each test so
 // it is not cached by dynamic imports
 beforeEach(function () {
-  TEST_FILE = resolve(__dirname, `./some-test.${+(new Date())}.module.js`)
+  TEST_FILE = resolve(__dirname, `./some-test.${+(new Date())}.${++count}.module.js`)
   swap('TEST_FILE', TEST_FILE)
 })
 
 // remove from file system
-afterEach(`removing generated files from last test`, function () {
-  // purge before we retest
-  purgeGeneratedFile(TEST_FILE)
-})
+// afterEach(`removing generated files from last test`, function () {
+//   // purge before we retest
+//   purgeGeneratedFile(TEST_FILE)
+// })
 
 /** After all test cases are complete. */
 after('Reverting global properties.', async () => {

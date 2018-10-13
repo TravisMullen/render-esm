@@ -17,7 +17,7 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
     expect(Object.values(exported)[0]).to.be.an('object').that.is.empty
   })
 
-  it('should have all exports with assigned keys', async function () {
+  it('should have all named exports', async function () {
     for (const item in TEST_DATA) {
       await testInstance.addExport(item, TEST_DATA[item])
     }
@@ -30,7 +30,7 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
     }
   })
 
-  it('should have all exports with assigned values', async function () {
+  it('should have all named exports with assigned values', async function () {
     for (const item in TEST_DATA) {
       await testInstance.addExport(item, TEST_DATA[item])
     }
@@ -49,7 +49,7 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
     }
   })
 
-  it('should have all exports with matching key:value pairs', async function () {
+  it('should have all named exports with matching key:value pairs', async function () {
     for (const item in TEST_DATA) {
       await testInstance.addExport(item, TEST_DATA[item])
     }
@@ -68,7 +68,7 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
     }
   })
 
-  it('should have all exports with same types', async function () {
+  it('should have all named exports with same types', async function () {
     const CHECK_TYPES = [
       'function',
       'boolean',
@@ -99,7 +99,7 @@ describe('should generate an ECMAScript 6 module file with valid exports when ca
     }
   })
 
-    it('should be able to assign a string as a single default export', async function () {
+  it('should be able to assign a string as a single default export', async function () {
     const exportName = 'default'
     const exportValue = TEST_DATA.someString
 
