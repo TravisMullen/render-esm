@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 
-const program = require('commander')
+// const program = require('commander')
 const RenderESM = require('../')
 
 console.log('CLI implementation is not yet enabled.')
