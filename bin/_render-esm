@@ -2,28 +2,5 @@
 'use strict'
 
 const program = require('commander')
-const Mocha = require('../')
+const RenderESM = require('../')
 
-const { spawn } = require('child_process')
-const path = require('path')
-const args = [path.join(__dirname, main)]
-
-const proc = spawn(process.execPath, args, {
-  stdio: 'inherit'
-})
-
-proc.on('exit', (code, signal) => {
-  process.on('exit', () => {
-    if (signal) {
-      process.kill(process.pid, signal)
-    } else {
-      process.exit(code)
-    }
-  })
-})
-
-// terminate children.
-process.on('SIGINT', () => {
-  proc.kill('SIGINT') // calls runner.abort()
-  proc.kill('SIGTERM') // if that didn't work, we're probably in an infinite loop, so make it die.
-})

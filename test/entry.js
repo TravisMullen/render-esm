@@ -34,8 +34,8 @@ const TEST_DATA = Object.freeze({
   someMoreString: 'Coloring book pabst pitchfork ennui lo-fi green juice taiyaki keytar.',
   yetAnotherString: 'Authentic single-origin coffee tousled 3 wolf moon butcher celiac distillery four dollar toast bespoke snackwave letterpress iPhone shabby chic hot chicken glossier.',
   someStringThatLooksLikeAFunction: `function (aParam) {
-    return true
-  }`,
+  return true
+}`,
   someFunction: function (aParam) {
     return `Typewriter ${aParam} kogi helvetica stumptown you probably haven't heard of them man braid.`
   },

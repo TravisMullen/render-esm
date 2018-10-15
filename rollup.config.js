@@ -2,7 +2,7 @@ import pkg from './package.json';
 
 const external = [
 	...Object.keys(pkg.dependencies),
-	// 'path',
+	'path',
 	'fs',
 	'child_process'
 ]

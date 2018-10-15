@@ -1,10 +1,13 @@
 
+import path from 'path'
+import { spawnSync } from 'child_process'
 import { writeFileSync, writeFile } from 'fs'
 import camelcase from 'camelcase'
-
-// import { util } from 'mocha'
+/** bin called by a spawned process */
+// import semistandard from 'semistandard'
 
 import { loadModule } from './load-module.js'
+import { checkFile } from './check-file.js'
 
 /**
  * Override any pre-existing file, and append new header.
@@ -132,6 +135,8 @@ class RenderESM {
     if (resetModule) {
       this.resetModuleSync()
     }
+
+    // this.formateFile()
   }
 
   /**
@@ -297,6 +302,21 @@ class RenderESM {
   //     })
   //   })
   // }
+
+  formateFile () {
+    // format (add semi-colons)
+    // process.on('beforeExit', code => {
+    // if (code === 0) {
+    if (checkFile(this._moduleFile)) {
+      spawnSync('node', [
+        path.resolve(__dirname, '../node_modules/semistandard/bin/cmd.js'),
+        '--fix',
+        this._moduleFile
+      ])
+    }
+    // }
+    // })
+  }
 }
 
 export default RenderESM
