@@ -1,5 +1,6 @@
 
 import { statSync } from 'fs'
+import { spawnSync } from 'child_process'
 
 /**
  * Does file exist.
@@ -16,4 +17,17 @@ export const checkFile = filePath => {
     stats = err
   }
   return !(stats instanceof Error)
+}
+
+/**
+ * Delete file if exists.
+ *
+ * @public
+ * @param {string} filePath Path to file.
+ */
+export const purgeFile = filePath => {
+  if (checkFile(filePath)) {
+    // purge before we begin
+    spawnSync('rm', [filePath])
+  }
 }

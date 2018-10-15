@@ -1,7 +1,7 @@
 
 import { resolve } from 'path'
 
-const someDefaultModule = resolve(__dirname, './helpers/example-module-prerender.js')
+const someDefaultModule = resolve(__dirname, './example-modules/example-module-prerender.js')
 
 function badContructorFirstArgument (argumentValue) {
   const testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE)

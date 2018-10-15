@@ -10,7 +10,7 @@ import { readFileSync, statSync } from 'fs'
 import { expect } from 'chai'
 
 import { loadModule } from '../src/load-module.js'
-import { purgeGeneratedFile } from './helpers/purge-file.js'
+import { purgeFile } from '../src/check-file.js'
 
 import RenderESM from '..'
 
@@ -95,7 +95,7 @@ beforeEach(function () {
 // remove from file system
 afterEach(`removing generated files from last test`, function () {
   // purge before we retest
-  purgeGeneratedFile(TEST_FILE)
+  purgeFile(TEST_FILE)
 })
 
 /** After all test cases are complete. */
