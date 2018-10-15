@@ -1,6 +1,6 @@
 {
   "name": "render-esm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/render-esm.cjs.js",
   "module": "dist/render-esm.mjs",
   "dependencies": {

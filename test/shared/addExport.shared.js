@@ -11,7 +11,7 @@
 const sharedTests = functionName => {
   let testInstance
 
-  describe.only(`generate default and named exports when calling ${functionName}`, function () {
+  describe(`generate default and named exports when calling ${functionName}`, function () {
     beforeEach(function () {
       testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
     })

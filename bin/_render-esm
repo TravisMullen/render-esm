@@ -4,3 +4,6 @@
 const program = require('commander')
 const RenderESM = require('../')
 
+console.log('CLI implementation is not yet enabled.')
+
+process.exit(1)

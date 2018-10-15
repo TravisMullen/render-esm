@@ -55,7 +55,7 @@ const TEST_DATA = Object.freeze({
 })
 
 /** After all test cases are started. */
-before('Assigning functions as global properties.', async () => {
+before('Assigning functions as global properties.', () => {
   const definitions = {
     expect,
     loadModule,
