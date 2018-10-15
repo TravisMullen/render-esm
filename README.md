@@ -31,7 +31,14 @@ renderESM.formateFile() // as semistandard / is standard by default
 
 ```
 
-More detailed usage coming...
+## CLI
+
+sill work in progress...
+
+
+
+
+### More detailed usage coming...
 
 
 
