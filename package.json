@@ -23,6 +23,7 @@
     "swap-global": "^1.0.5"
   },
   "scripts": {
+    "prepare": "npm run test",
     "prebuild": "npm run lint",
     "build": "rollup -c",
     "dev": "rollup -c -w",
