@@ -9,10 +9,10 @@ Supports Async and Sync methods.
 
 See tests:
 
-[Create Instance](test/1.constructor.spec.js)
-[Reset/Clear Module File](test/shared/resetModule.shared.js)
-[Add Named and/or `default` Export - from argument](test/shared/addExport.shared.js)
-[Add Rendered Named and/or `default` Export - from another ESM file](test/7.addRenderedExport.spec.js)
+- [Create Instance](test/1.constructor.spec.js)
+- [Reset/Clear Module File](test/shared/resetModule.shared.js)
+- [Add Named and/or `default` Export - from argument](test/shared/addExport.shared.js)
+- [Add Rendered Named and/or `default` Export - from another ESM file](test/7.addRenderedExport.spec.js)
 
 Can format file (add Semi-colons) using `formateFile` from instance.
 ```js
