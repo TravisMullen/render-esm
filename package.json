@@ -84,6 +84,7 @@
     "render-ecmascript",
     "render-export",
     "ecmascript-optimization",
+    "ecmascript-module",
     "optimization",
     "javascriptmodules",
     "javascript-modules",
