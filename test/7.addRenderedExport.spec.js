@@ -1,11 +1,11 @@
 
 import { resolve } from 'path'
 
-const someDefaultModule = resolve(__dirname, './example-modules/example-module-prerender.js')
+const someDefaultModule = resolve(__dirname, './modules/example-module-alpha.prerender.js')
 
 let testInstance
 
-describe('generate static exports when calling "addRenderedExport"', function () {
+describe.only('generate static exports when calling "addRenderedExport"', function () {
   beforeEach(function () {
     testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
   })

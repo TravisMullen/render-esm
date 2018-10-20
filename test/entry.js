@@ -3,16 +3,22 @@
 import 'babel-register'
 import 'babel-polyfill'
 
-import { swap, restore } from 'swap-global'
+import {
+  swap,
+  restore
+} from 'swap-global'
 
 import { resolve } from 'path'
-import { readFileSync, statSync } from 'fs'
+import {
+  readFileSync,
+  statSync
+} from 'fs'
 import { expect } from 'chai'
 
 import { loadModule } from '../src/load-module.js'
 import { purgeFile } from '../src/check-file.js'
 
-import RenderESM from '..'
+import { RenderESM, bulkRenderESM } from '..'
 
 let TEST_FILE // to be reassigned (using `swap`) with each test.
 const TEST_FILE_TYPE = 'my generated file'
@@ -61,6 +67,7 @@ before('Assigning functions as global properties.', () => {
     loadModule,
     statSync,
     readFileSync,
+    bulkRenderESM,
     RenderESM,
     NON_STRINGS,
     TEST_FILE_TYPE,

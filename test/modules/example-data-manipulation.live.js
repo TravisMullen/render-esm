@@ -15,4 +15,4 @@ function manipulateData () {
   return augmented
 }
 
-export default manipulateData
+export { manipulateData as liveContent }
