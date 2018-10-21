@@ -9,25 +9,24 @@ import camelcase from 'camelcase'
 /** bin called by a spawned process */
 // import semistandard from 'semistandard'
 
-import { isArrayOfStrings } from './validate-arguments.js'
+import {
+  isArrayOfStrings
+} from './validate-arguments.js'
 import { loadModule } from './load-module.js'
 import { checkFile } from './check-file.js'
-import {
-  gatherFiles,
-  getRawFileRoot
-} from './gather-asset-files.js'
 
 // import runBulkRenderESM from './bulk-ender-esm.js'
 
 /**
- * Override any pre-existing file, and append new header.
+ * Used to reset the file contents, and append new header.
+ * File System `flag`: `'w'` - Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
  *
  * @private
- * @param {string} exportType Type of exports contained in file.
+ * @param {string} headerPrefix Type of exports contained in file.
  * @return {(string|Object)[]} An array with <string> to be appeneded to file, and options <Object> of [File System Flags](https://nodejs.org/api/fs.html#fs_file_system_flags) for `fs.writeFileSync`
  */
-const resetModule = exportType => {
-  return [`/** ${exportType} exports as es6 module */`, { flag: 'w', encoding: 'utf8', mode: 0o666 }]
+const truncateModule = headerPrefix => {
+  return [`/** ${headerPrefix} exports as es6 module */`, { flag: 'w', encoding: 'utf8', mode: 0o666 }]
 }
 
 /**
@@ -126,40 +125,44 @@ export default ${defaultName}
 // }
 
 class RenderESM {
-  constructor (renderedModuleFile, moduleHeader, resetModule = true) {
+  constructor (renderedModuleFile, {
+    header = (new Date()).toUTCString(),
+    truncate = true
+  } = {}) {
     if (typeof (renderedModuleFile) !== 'string') {
       throw new TypeError('first argument is not a valid file path <string>')
     }
-    if (typeof (moduleHeader) !== 'string') {
+    if (typeof (header) !== 'string') {
       throw new TypeError('second argument is not a valid file extension or substring <string>')
     }
 
     /** `export` names and values rendered using `addRenderedExport`
       * @api public
+      * @todo  Make `Set()`
       */
-    this.renderedExports = []
+    this.renderedExports = {}
 
     this._renderedModuleFile = renderedModuleFile
-    this._moduleHeader = moduleHeader
+    this._moduleHeader = header
 
-    if (resetModule) {
-      this.resetModuleSync()
+    if (truncate) {
+      this.truncateModuleSync()
     }
 
     // this.formateFile()
   }
 
   /**
-   * Asynchronous method for `resetModule`
+   * Asynchronous method for `truncateModule`
    *
    * @memberof RenderESM
    * @public
    * @api public
-   * @see {@link resetModule}
+   * @see {@link truncateModule}
    * @return {Promise}
    */
-  resetModule () {
-    const args = resetModule(this._moduleHeader)
+  truncateModule () {
+    const args = truncateModule(this._moduleHeader)
     return new Promise((resolve, reject) => {
       writeFile(this._renderedModuleFile, ...args, err => {
         if (err) {
@@ -172,17 +175,17 @@ class RenderESM {
   }
 
   /**
-   * Synchronous method for `resetModule`
+   * Synchronous method for `truncateModule`
    *
    * @memberof RenderESM
    * @public
    * @api public
-   * @see {@link resetModule}
+   * @see {@link truncateModule}
    * @return {undefined}
    * @see {@link https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options}
    */
-  resetModuleSync () {
-    const args = resetModule(this._moduleHeader)
+  truncateModuleSync () {
+    const args = truncateModule(this._moduleHeader)
     return writeFileSync(this._renderedModuleFile, ...args)
   }
 
@@ -215,7 +218,7 @@ class RenderESM {
   // }
 
   /**
-   * Asynchronous method for `resetModule`
+   * Asynchronous method for `truncateModule`
    *
    * @memberof RenderESM
    * @async
@@ -244,12 +247,15 @@ class RenderESM {
         continue
       }
       if (this.renderedExports[item]) {
-        throw new Error(`export ${item} was already was addded.`)
+        throw new Error(`export ${item} was already was added.`)
       }
-      this.renderedExports.push({
-        [item]: rendered[item]
-      })
-      await this.addExport(item, rendered[item])
+
+      /** handle an incomplete promise */
+      const finishPromise = await rendered[item]
+
+      this.renderedExports[item] = finishPromise
+
+      await this.addExport(item, finishPromise)
     }
   }
 
@@ -327,28 +333,6 @@ class RenderESM {
     }
     // }
     // })
-  }
-
-  static findByExtension (fileExtension) {
-    return gatherFiles(fileExtension)
-  }
-
-  static findBySubstring (fileSubstring) {
-    return gatherFiles(fileSubstring, true)
-  }
-
-  /**
-   * Create a export name from file path/name.
-   * Gets root name file path and make its `camelCase` style.
-   *
-   * param {string} filePath File extension
-   * @param {string} extensionOrSubstring File extension, or substring.
-   * @return {string} `camelCased` name of file without extension, or anything after subtring.
-   */
-  static createExportName (filePath, extensionOrSubstring) {
-    return camelcase(
-      getRawFileRoot(filePath, extensionOrSubstring)
-    )
   }
 }
 

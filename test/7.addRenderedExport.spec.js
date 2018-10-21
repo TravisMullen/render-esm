@@ -5,9 +5,9 @@ const someDefaultModule = resolve(__dirname, './modules/example-module-alpha.pre
 
 let testInstance
 
-describe.only('generate static exports when calling "addRenderedExport"', function () {
+describe('generate static exports when calling "addRenderedExport"', function () {
   beforeEach(function () {
-    testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+    testInstance = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
   })
 
   it('should have all exports from targeted module if not specified in second param of "addRenderedExport"', async function () {
@@ -71,5 +71,19 @@ describe.only('generate static exports when calling "addRenderedExport"', functi
     }
 
     expect(file.toString()).not.to.include('import', 'should have no import(s) to confirm dependencies were removed [and values rendered].')
+  })
+
+  it('should finish incomplete promises', async function () {
+    const somePromiseModule = resolve(__dirname, './modules/example-module-simulate-heavy-compute.prerender.js')
+    await testInstance.addRenderedExport(somePromiseModule)
+
+    const exported = await loadModule(TEST_FILE)
+    const targetedModule = await loadModule(somePromiseModule)
+    const finishedPromise = await targetedModule
+
+    expect(Object.keys(exported)).to.have.lengthOf(Object.keys(finishedPromise).length, 'does not match same amount keys as target module')
+    for (const item of Object.keys(exported)) {
+      expect(Object.keys(finishedPromise)).to.include(item)
+    }
   })
 })

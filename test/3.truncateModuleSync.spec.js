@@ -1,15 +1,15 @@
 
-import resetModuleTests from './shared/resetModule.shared.js'
+import truncateModuleTests from './shared/truncateModule.shared.js'
 
 /** @see tests in ./shared */
-resetModuleTests('resetModuleSync')
+truncateModuleTests('truncateModuleSync')
 
-describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSync from constructor', function () {
+describe('generate an ECMAScript 6 module file with RenderESM and truncateModuleSync from constructor', function () {
   it('should clean existing file [by default] when RenderESM is called on existing file', function () {
     const exportName = 'someExportName'
     const exportValue = 'someExportValue'
 
-    let renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+    let renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
 
     renderESM.addExportSync(exportName, exportValue)
 
@@ -25,7 +25,7 @@ describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSyn
     expect(file.toString()).to.include(exportName)
     expect(file.toString()).to.include(exportValue)
 
-    renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+    renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
 
     try {
       file = readFileSync(TEST_FILE)
@@ -42,7 +42,7 @@ describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSyn
     const exportName = 'someExportName'
     const exportValue = 'someExportValue'
 
-    let renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+    let renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
 
     renderESM.addExportSync(exportName, exportValue)
 
@@ -58,7 +58,7 @@ describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSyn
     expect(file.toString()).to.include(exportName)
     expect(file.toString()).to.include(exportValue)
 
-    renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, false)
+    renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE, truncate: false })
 
     try {
       file = readFileSync(TEST_FILE)
@@ -74,7 +74,7 @@ describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSyn
     const exportName = 'someExportName'
     const exportValue = 'someExportValue'
 
-    let renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+    let renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE, truncate: true })
 
     renderESM.addExportSync(exportName, exportValue)
 
@@ -90,7 +90,7 @@ describe('generate an ECMAScript 6 module file with RenderESM and resetModuleSyn
     expect(file.toString()).to.include(exportName)
     expect(file.toString()).to.include(exportValue)
 
-    renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+    renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE, truncate: true })
 
     try {
       file = readFileSync(TEST_FILE)

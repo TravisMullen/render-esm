@@ -14,7 +14,7 @@ const sharedTests = functionName => {
       const exportName = 'someExportName'
       const exportValue = 'someExportValue'
 
-      const renderESM = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+      const renderESM = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
 
       renderESM.addExportSync(exportName, exportValue)
 

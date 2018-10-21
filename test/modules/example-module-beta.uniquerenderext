@@ -1,0 +1,12 @@
+
+import camelcase from 'camelcase'
+
+const rawStringExt = 'this is a `const` string!'
+
+const betaFunction = () => {
+  return `this is a default export rendered string: ${camelcase(rawStringExt)}`
+}
+
+const renderedFunction = betaFunction()
+
+export { renderedFunction as betaContentExt }

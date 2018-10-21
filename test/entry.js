@@ -16,9 +16,9 @@ import {
 import { expect } from 'chai'
 
 import { loadModule } from '../src/load-module.js'
-import { purgeFile } from '../src/check-file.js'
+// import { purgeFile } from '../src/check-file.js'
 
-import { RenderESM, bulkRenderESM } from '..'
+import { RenderESM, BulkRenderESM } from '..'
 
 let TEST_FILE // to be reassigned (using `swap`) with each test.
 const TEST_FILE_TYPE = 'my generated file'
@@ -63,12 +63,12 @@ const TEST_DATA = Object.freeze({
 /** After all test cases are started. */
 before('Assigning functions as global properties.', () => {
   const definitions = {
+    RenderESM,
+    BulkRenderESM,
     expect,
     loadModule,
     statSync,
     readFileSync,
-    bulkRenderESM,
-    RenderESM,
     NON_STRINGS,
     TEST_FILE_TYPE,
     TEST_DATA,
@@ -102,7 +102,7 @@ beforeEach(function () {
 // remove from file system
 afterEach(`removing generated files from last test`, function () {
   // purge before we retest
-  purgeFile(TEST_FILE)
+  // purgeFile(TEST_FILE)
 })
 
 /** After all test cases are complete. */

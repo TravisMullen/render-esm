@@ -4,7 +4,7 @@ import { resolve } from 'path'
 const someDefaultModule = resolve(__dirname, './modules/example-module-prerender.js')
 
 function badContructorFirstArgument (argumentValue) {
-  const testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+  const testInstance = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
   const arg = argumentValue
   return function () {
     testInstance.addRenderedExport(arg)
@@ -12,7 +12,7 @@ function badContructorFirstArgument (argumentValue) {
 }
 
 const badContructorSecondArgument = argumentValue => {
-  const testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE)
+  const testInstance = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
   const arg = argumentValue
   return function () {
     testInstance.addRenderedExport(someDefaultModule, arg)

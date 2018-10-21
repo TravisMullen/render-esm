@@ -8,10 +8,10 @@ const simulatedHeavyComputation = () => {
     setTimeout(() => {
       const msg = camelcase(message)
       resolve(msg)
-    }, 2000)
+    }, 500)
   })
 }
 
-const heavyComputation = () => simulatedHeavyComputation()
+const heavyComputation = simulatedHeavyComputation()
 
 export { heavyComputation }

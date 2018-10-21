@@ -1,92 +1,118 @@
 
 import { sync as globSync } from 'glob'
-import { getFilesByExtension } from '../src/gather-asset-files.js'
-import { resolve } from 'path'
+// import { createNodeProjectGlob } from '../src/gather-asset-files.js'
+import { resolve, parse } from 'path'
 
-// const someDefaultModule = resolve(__dirname, './example-modules/example-module-prerender.js')
+// const magicGlob = createNodeProjectGlob()
+
+const someDefaultModule = resolve(__dirname, './modules/example-module-alpha.prerender.js')
 
 // let testInstance
 
-describe.skip('generate static exports when calling "addRenderedExport"', function () {
-  // beforeEach(function () {
-  //   testInstance = new bulkRenderESM(TEST_FILE)
-  // })
+const validateGeneratedFiles = (bulkOptions, targetModuleFiles) => {
+  const header = `[${Object.keys(bulkOptions)}]`
+  describe(`should render all exports from target module files using ${header} options`, async function () {
+    beforeEach(async function () {
+      const testInstance = new BulkRenderESM(
+        TEST_FILE,
+        {
+          header
+        },
+        bulkOptions
+      )
 
-  // it('should have all exports from targeted module if not specified in second param of "addRenderedExport"', async function () {
-  //   await bulkRenderESM(TEST_FILE)
+      await testInstance.init()
+    })
+    it('should have all exports from each targeted module file', async function () {
+      for (const targetModuleFile of targetModuleFiles) {
+        const exported = await loadModule(TEST_FILE)
+        const targetedModule = await loadModule(targetModuleFile)
 
-  //   const exported = await loadModule(TEST_FILE)
-  //   const targetedModule = await loadModule(someDefaultModule)
+        const { name } = parse(targetModuleFile)
+        console.log(`Validating: ${name}`)
 
-  //   // expect(Object.keys(exported)).to.have.lengthOf(Object.keys(targetedModule).length, 'does not match same amount keys as target module')
-  //   for (const item of exported) {
-  //     expect(Object.keys(targetedModule)).to.include(item)
-  //   }
-  // })
-  // it('should have selected named export from targeted module if specified in second param of "addRenderedExport"', async function () {
-  //   const selectedExport = 'renderedString'
-  //   await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
+        for (const item of Object.keys(targetedModule)) {
+          expect(Object.keys(exported)).to.include(item)
+        }
+      }
+    })
+    it('should have selected export without dependencies module', async function () {
+      let file
+      try {
+        file = readFileSync(TEST_FILE)
+      } catch (err) {
+        file = err
+      }
 
-  //   const exported = await loadModule(TEST_FILE)
-
-  //   const targetedModule = await loadModule(someDefaultModule)
-
-  //   expect(exported[selectedExport]).to.equal(targetedModule[selectedExport], 'should match value of target module')
-  //   // get non-selected keys from targetedModule and confirm they are not in exported
-  //   for (const item of Object.keys(targetedModule).filter(i => i !== selectedExport)) {
-  //     expect(Object.keys(exported)).not.to.include(item, 'should not have target module keys that were not selected')
-  //   }
-  // })
-
-  // it('should have selected "default" export from targeted module if specified in second param of "addRenderedExport"', async function () {
-  //   const selectedExport = 'default'
-  //   await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
-
-  //   const exported = await loadModule(TEST_FILE)
-
-  //   const targetedModule = await loadModule(someDefaultModule)
-
-  //   expect(exported[selectedExport]).to.equal(targetedModule[selectedExport], 'should match value of target module')
-  //   // get non-selected keys from targetedModule and confirm they are not in exported
-  //   for (const item of Object.keys(targetedModule).filter(i => i !== selectedExport)) {
-  //     expect(Object.keys(exported)).not.to.include(item, 'should not have target module keys that were not selected')
-  //   }
-  // })
-
-  it('should have selected export without dependencies module', async function () {
-    const selectedSubstring = 'example-module'
-    // await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
-    await bulkRenderESM(TEST_FILE, selectedSubstring)
-
-    let file
-    const someDefaultModules = globSync(getFilesByExtension(selectedSubstring, true))
-    // try {
-    //   file = readFileSync(someDefaultModule)
-    // } catch (err) {
-    //   file = err
-    // }
-    //
-    let targetedModules = []
-    for (const filePath of someDefaultModules) {
-      targetedModules = targetedModules.concat(await loadModule(resolve(__dirname, '..', filePath)))
-    }
-    // const targetedModules = targetedModules
-    console.log('targetedModules', targetedModules)
-
-    const exported = await loadModule(TEST_FILE)
-
-    console.log('exported', exported)
-    expect(Object.keys(exported)).to.have.lengthOf(Object.keys(targetedModules).length, 'does not match same amount keys as target module')
-    for (const item of exported) {
-      expect(Object.keys(targetedModules)).to.include(item)
-    }
-
-    try {
-      file = readFileSync(TEST_FILE)
-    } catch (err) {
-      file = err
-    }
-
-    expect(file.toString()).not.to.include('import', 'should have no import(s) to confirm dependencies were removed [and values rendered].')
+      expect(file.toString()).not.to.include('import', 'should have no import(s) to confirm dependencies were removed [and values rendered].')
+    })
   })
-})
+}
+
+validateGeneratedFiles(
+  {
+    path: someDefaultModule
+  },
+  [someDefaultModule]
+)
+
+validateGeneratedFiles(
+  {
+    paths: [someDefaultModule]
+  },
+  [someDefaultModule]
+)
+
+const substringModules = globSync(resolve(__dirname, '{,!(node_modules)/**/}*prerender*'))
+
+validateGeneratedFiles(
+  {
+    paths: substringModules
+  },
+  substringModules
+)
+
+validateGeneratedFiles(
+  {
+    substring: 'prerender'
+  },
+  substringModules
+)
+
+// todo test content not modules!
+
+// const extensionModules = globSync(resolve(__dirname, '{,!(node_modules)/**/}*.txt'))
+
+//   describe.only(`should render all exports from target module files using "${Object.keys(bulkOptions)}" options`, async function () {
+//     beforeEach(async function () {
+//       const testInstance = new BulkRenderESM(
+//         TEST_FILE,
+//         {
+//           header: TEST_FILE_TYPE
+//         },
+//         bulkOptions
+//       )
+
+//       await testInstance.init()
+//     })
+//     it('should have all exports from each targeted module file', async function () {
+//       for (const targetModuleFile of targetModuleFiles) {
+//         const exported = await loadModule(TEST_FILE)
+//         const targetedModule = await loadModule(targetModuleFile)
+//         console.log(`Validating: ${targetModuleFile}`)
+//         for (const item of Object.keys(targetedModule)) {
+//           expect(Object.keys(exported)).to.include(item)
+//         }
+//       }
+//     })
+//     it('should have selected export without dependencies module', async function () {
+//       let file
+//       try {
+//         file = readFileSync(TEST_FILE)
+//       } catch (err) {
+//         file = err
+//       }
+
+//       expect(file.toString()).not.to.include('import', 'should have no import(s) to confirm dependencies were removed [and values rendered].')
+//     })
+//   })

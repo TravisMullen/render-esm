@@ -1,6 +1,6 @@
 {
   "name": "render-esm",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "dist/render-esm.cjs.js",
   "module": "dist/render-esm.mjs",
   "dependencies": {
@@ -39,7 +39,7 @@
     ],
     "globals": [
       "RenderESM",
-      "bulkRenderESM",
+      "BulkRenderESM",
       "expect",
       "loadModule",
       "statSync",

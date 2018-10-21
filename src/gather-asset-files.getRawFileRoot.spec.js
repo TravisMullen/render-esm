@@ -2,7 +2,10 @@ import 'babel-register'
 import 'babel-polyfill'
 import { expect } from 'chai'
 
-import { getRawFileRoot } from '../src/gather-asset-files.js'
+import {
+  // createNodeProjectGlob,
+  getRawFileRoot
+} from '../src/gather-asset-files.js'
 
 const testPaths = [
   './some/dir/alpha.beta.js',
@@ -63,13 +66,13 @@ const testPaths = [
 ]
 
 const MATCH = 'alphabeta'
-const testName = fileName => {
+const testName = (fileName, raw) => {
   const filtered = fileName
     .toLowerCase()
     .replace(/\./g, '')
     .replace(/-/g, '')
   expect(filtered).to.not.have.string(/\//) // '/'
-  expect(filtered).to.equal(MATCH)
+  expect(filtered).to.equal(MATCH, `should get name from ${raw}`)
 }
 
 describe('get root name from filepath with "getRawFileRoot".', function () {
@@ -77,15 +80,31 @@ describe('get root name from filepath with "getRawFileRoot".', function () {
     for (const jawn of testPaths) {
       testName(
         getRawFileRoot(jawn)
-          .replace('namespace', '')
+          .replace('namespace', ''),
+        jawn
       )
     }
   })
   it('should remove namespace as second argument', function () {
     for (const jawn of testPaths) {
       testName(
-        getRawFileRoot(jawn, 'namespace')
+        getRawFileRoot(jawn, 'namespace'),
+        jawn
       )
     }
   })
 })
+
+// describe('get root name from filepath with "getRawFileRoot".', function () {
+//   it('should remove extension by default', function () {
+//     createNodeProjectGlob
+//   })
+//   it('should remove namespace as second argument', function () {
+//     for (const jawn of testPaths) {
+//       testName(
+//         getRawFileRoot(jawn, 'namespace'),
+//         jawn
+//       )
+//     }
+//   })
+// })

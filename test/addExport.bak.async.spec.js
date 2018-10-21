@@ -3,7 +3,7 @@
 
 // describe('should generate an ECMAScript 6 module file with valid exports when calling [async] addExport', function () {
 //   beforeEach(async function () {
-//     testInstance = await new CreateESM(TEST_FILE, TEST_FILE_TYPE, true)
+//     testInstance = await new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
 //   })
 
 //   it('should have no exports until "addExport" is called', async function () {

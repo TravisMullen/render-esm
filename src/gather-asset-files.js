@@ -1,4 +1,5 @@
 
+import { parse, resolve } from 'path'
 import { sync as globSync } from 'glob'
 
 /**
@@ -18,21 +19,22 @@ export const createNodeProjectGlob = (fileExtension = 'js', substring = false) =
     substring ? '' : '.', // add period prefix for `.ext`
     fileExtension
       .toLowerCase() // lower the case...
-      .replace('.', ''), // remove period if passed in by user.
+      .replace(/^./, ''), // remove ext period prefix if passed in by user.
     substring ? '*' : '' // add `*` for substring search
   ].join('') // combine as one string without breaks or spaces
 )
 
 /**
  * Finds all files by extension or substring.
+ * Assumes CWD is root of project (run from `package.json`)
  *
  * @param {string} fileExtension File extension
  * @param {boolean} substring Custom glob, if default is not desired.
  * @return {string[]} list of file paths
  */
-export const gatherFiles = (fileExtension, substring = false) => {
-  globSync(createNodeProjectGlob(fileExtension, substring))
-}
+export const gatherFiles = (fileExtension, substring = false) => (
+  globSync(resolve(process.cwd(), createNodeProjectGlob(fileExtension, substring)))
+)
 
 /**
  * Gets root name file path.
@@ -41,15 +43,18 @@ export const gatherFiles = (fileExtension, substring = false) => {
  * @param {string} substring Removes everything after start of substring.
  * @return {string} Name of file without extension, or anything after subtring.
  */
-export const getRawFileRoot = (filePath, substring = '.') => {
-  const start = filePath.lastIndexOf('/') + 1 // if no index still becomes 0
-  const end = filePath.lastIndexOf(substring)
-  return filePath.slice(
-    start,
-    end === -1
-      ? filePath.lastIndexOf('.')
-      : end
-  )
+export const getRawFileRoot = (filePath, substring) => {
+  const { name } = parse(filePath)
+  if (substring &&
+    typeof (substring) === 'string' &&
+    name.includes(substring)) {
+    return name.slice(
+      0,
+      name.indexOf(substring)
+    )
+  } else {
+    return name
+  }
 }
 
 /**

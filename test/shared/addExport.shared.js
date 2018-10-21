@@ -13,7 +13,7 @@ const sharedTests = functionName => {
 
   describe(`generate default and named exports when calling ${functionName}`, function () {
     beforeEach(function () {
-      testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+      testInstance = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
     })
 
     it(`should have no exports until "${functionName}" is called`, async function () {

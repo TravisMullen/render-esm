@@ -17,7 +17,7 @@ See tests:
 Can format file (add Semi-colons) using `formateFile` from instance.
 ```js
 
-const renderESM = new RenderESM('./my-new-module.js', 'Header Content') 
+const renderESM = new RenderESM('./my-new-module.js', { header: 'Header Content' }) 
 // will reset existing file by default (calling `resetModuleSync`)
 // to maintain existing file content use `false` as third argument
 // => will create './my-new-module.js' with `/** Header Content exports as es6 module */` as first line.

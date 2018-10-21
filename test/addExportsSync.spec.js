@@ -3,7 +3,7 @@
 
 describe.skip('should add a collection of exports based on additions from "addImportSync"', function () {
   // beforeEach(async function () {
-  //   testInstance = await new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+//     testInstance = await new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
   // })
 
   it('should have no exports until "addExportsSync" is called', async function () {

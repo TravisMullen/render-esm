@@ -1,6 +1,6 @@
 
 import RenderESM from './render-esm.js'
-import bulkRenderESM from './bulk-render-esm.js'
+import BulkRenderESM from './bulk-render-esm.js'
 
-// export const bulk = bulkRenderESM
-export { RenderESM, bulkRenderESM }
+// export const bulk = BulkRenderESM
+export { RenderESM, BulkRenderESM }

@@ -7,7 +7,7 @@ let testInstance
 
 describe.skip(`import target modules as live bindings using "addImportSync"`, function () {
   beforeEach(function () {
-    testInstance = new RenderESM(TEST_FILE, TEST_FILE_TYPE, true)
+    testInstance = new RenderESM(TEST_FILE, { header: TEST_FILE_TYPE })
   })
 
   it('should be able to import named exports from target module', async function () {
