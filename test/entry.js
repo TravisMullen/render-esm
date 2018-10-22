@@ -18,7 +18,7 @@ import { expect } from 'chai'
 import { loadModule } from '../src/load-module.js'
 import { purgeFile } from '../src/check-file.js'
 
-import { RenderESM, AdvanedRenderESM } from '..'
+import RenderESM from '..'
 
 let TEST_FILE // to be reassigned (using `swap`) with each test.
 const TEST_FILE_TYPE = 'my generated file'
@@ -64,7 +64,6 @@ const TEST_DATA = Object.freeze({
 before('Assigning functions as global properties.', () => {
   const definitions = {
     RenderESM,
-    AdvanedRenderESM,
     expect,
     loadModule,
     statSync,

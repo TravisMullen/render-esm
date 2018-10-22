@@ -14,7 +14,7 @@ import {
   validateFindBy
 } from './validate-arguments.js'
 
-class AdvancedRenderESM extends BaseRenderESM {
+class RenderESM extends BaseRenderESM {
   constructor (...args) {
     super(...args)
     const [,, {
@@ -30,7 +30,7 @@ class AdvancedRenderESM extends BaseRenderESM {
       glob,
       path,
       paths
-    }] = args
+    } = {}] = args
 
     if (render &&
       typeof (render) === 'function') {
@@ -42,7 +42,7 @@ class AdvancedRenderESM extends BaseRenderESM {
     /** @todo do more accurate absulute and relative path check */
     /** use switch for this? */
     if (glob) {
-      AdvancedRenderESM
+      RenderESM
         .findByGlob(glob)
         .forEach(item => {
           this._targetFiles.add(
@@ -52,7 +52,7 @@ class AdvancedRenderESM extends BaseRenderESM {
     }
 
     if (extension) {
-      AdvancedRenderESM
+      RenderESM
         .findByExtension(extension)
         .forEach(item => {
           this._targetFiles.add(
@@ -62,7 +62,7 @@ class AdvancedRenderESM extends BaseRenderESM {
     }
 
     if (substring) {
-      AdvancedRenderESM
+      RenderESM
         .findBySubstring(substring)
         .forEach(item => {
           this._targetFiles.add(
@@ -86,11 +86,11 @@ class AdvancedRenderESM extends BaseRenderESM {
   }
 
   async _doCustomRender (assetPath) {
-    const exportName = AdvancedRenderESM.createExportName(assetPath)
+    const exportName = RenderESM.createExportName(assetPath)
     if (this.renderedExports[exportName]) {
       throw new Error(`export ${exportName} was already was added.`)
     }
-    
+
     const data = await this._renderFunction(assetPath)
 
     this.renderedExports[exportName] = data
@@ -149,4 +149,4 @@ class AdvancedRenderESM extends BaseRenderESM {
   }
 }
 
-export default AdvancedRenderESM
+export default RenderESM

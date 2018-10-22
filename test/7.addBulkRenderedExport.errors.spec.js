@@ -60,7 +60,7 @@ describe.skip('generate static exports when calling "addBulkRenderedExport"', fu
     // const render = jawn => `This is the ${jawn}`
     // await testInstance.addRenderedExport(someDefaultModule, [selectedExport])
     // await bulkRenderESM(TEST_FILE, selectedSubstring)
-    const testInstance = new AdvanedRenderESM(TEST_FILE, {
+    const testInstance = new RenderESM(TEST_FILE, {
       header: TEST_FILE_TYPE
     },
     {
@@ -72,7 +72,7 @@ describe.skip('generate static exports when calling "addBulkRenderedExport"', fu
     console.log('testInstance', testInstance)
     // let file
     // const someDefaultModules = globSync(createNodeProjectGlob(subname, true))
-    // const someDefaultModules = AdvanedRenderESM.findBySubstring(subname)
+    // const someDefaultModules = RenderESM.findBySubstring(subname)
 
     // console.log('someDefaultModules', someDefaultModules)
     // // try {

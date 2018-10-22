@@ -9,7 +9,7 @@ const validateGeneratedFiles = (bulkOptions, targetModuleFiles) => {
   const header = `[${Object.keys(bulkOptions)}]`
   describe(`should render all exports from target module files using ${header} options`, async function () {
     beforeEach(async function () {
-      const testInstance = new AdvanedRenderESM(
+      const testInstance = new RenderESM(
         TEST_FILE,
         {
           header
@@ -88,7 +88,7 @@ validateGeneratedFiles(
 
 //   describe.only(`should render all exports from target module files using "${Object.keys(bulkOptions)}" options`, async function () {
 //     beforeEach(async function () {
-//       const testInstance = new AdvanedRenderESM(
+//       const testInstance = new RenderESM(
 //         TEST_FILE,
 //         {
 //           header: TEST_FILE_TYPE

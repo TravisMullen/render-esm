@@ -39,7 +39,6 @@
     ],
     "globals": [
       "RenderESM",
-      "AdvanedRenderESM",
       "expect",
       "loadModule",
       "statSync",
