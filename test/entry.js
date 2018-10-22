@@ -16,7 +16,7 @@ import {
 import { expect } from 'chai'
 
 import { loadModule } from '../src/load-module.js'
-// import { purgeFile } from '../src/check-file.js'
+import { purgeFile } from '../src/check-file.js'
 
 import { RenderESM, BulkRenderESM } from '..'
 
@@ -102,7 +102,7 @@ beforeEach(function () {
 // remove from file system
 afterEach(`removing generated files from last test`, function () {
   // purge before we retest
-  // purgeFile(TEST_FILE)
+  purgeFile(TEST_FILE)
 })
 
 /** After all test cases are complete. */

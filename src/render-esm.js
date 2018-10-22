@@ -15,7 +15,7 @@ import {
 import { loadModule } from './load-module.js'
 import { checkFile } from './check-file.js'
 
-// import runBulkRenderESM from './bulk-ender-esm.js'
+// import runBulkBaseRenderESM from './bulk-ender-esm.js'
 
 /**
  * Used to reset the file contents, and append new header.
@@ -124,7 +124,7 @@ export default ${defaultName}
 //   return [fileAddition, { flag: 'a', encoding: 'utf8', mode: 0o666 }]
 // }
 
-class RenderESM {
+class BaseRenderESM {
   constructor (renderedModuleFile, {
     header = (new Date()).toUTCString(),
     truncate = true
@@ -155,7 +155,7 @@ class RenderESM {
   /**
    * Asynchronous method for `truncateModule`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @public
    * @api public
    * @see {@link truncateModule}
@@ -177,7 +177,7 @@ class RenderESM {
   /**
    * Synchronous method for `truncateModule`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @public
    * @api public
    * @see {@link truncateModule}
@@ -192,7 +192,7 @@ class RenderESM {
   /**
    * Synchronous method for `addImport`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @public
    * @api public
    * @see {@link addImport}
@@ -220,7 +220,7 @@ class RenderESM {
   /**
    * Asynchronous method for `truncateModule`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @async
    * @public
    * @api public
@@ -262,7 +262,7 @@ class RenderESM {
   /**
    * Synchronous method for `addExport`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @public
    * @api public
    * @see {@link addExport}
@@ -277,7 +277,7 @@ class RenderESM {
   /**
    * Asynchronous method for `addExport`
    *
-   * @memberof RenderESM
+   * @memberof BaseRenderESM
    * @public
    * @api public
    * @see {@link addExport}
@@ -315,7 +315,7 @@ class RenderESM {
   // }
 
   formate () {
-    RenderESM.formateFile(this._renderedModuleFile)
+    BaseRenderESM.formateFile(this._renderedModuleFile)
   }
 
   // utils
@@ -336,4 +336,4 @@ class RenderESM {
   }
 }
 
-export default RenderESM
+export default BaseRenderESM

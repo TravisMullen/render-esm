@@ -3,11 +3,7 @@ import { sync as globSync } from 'glob'
 // import { createNodeProjectGlob } from '../src/gather-asset-files.js'
 import { resolve, parse } from 'path'
 
-// const magicGlob = createNodeProjectGlob()
-
 const someDefaultModule = resolve(__dirname, './modules/example-module-alpha.prerender.js')
-
-// let testInstance
 
 const validateGeneratedFiles = (bulkOptions, targetModuleFiles) => {
   const header = `[${Object.keys(bulkOptions)}]`
@@ -75,6 +71,13 @@ validateGeneratedFiles(
 validateGeneratedFiles(
   {
     substring: 'prerender'
+  },
+  substringModules
+)
+
+validateGeneratedFiles(
+  {
+    glob: '{,!(node_modules)/**/}*prerender*'
   },
   substringModules
 )

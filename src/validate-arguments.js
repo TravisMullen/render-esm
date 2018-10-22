@@ -14,9 +14,11 @@ export const isArrayOfStrings = (argValue, messagePrefix = 'first') => {
 
 export const validateFindBy = (foundFiles, target) => {
   if (!foundFiles.length) {
-    throw new Error(`no target modules or files found using "${target}"`)
-    // return false
-  } else {
-    return true
+    console.warn(`no target modules or files found using "${target}"`)
+    // throw new Error(`no target modules or files found using "${target}"`)
+  //   return false
+  // } else {
+  //   return true
   }
+  return true
 }

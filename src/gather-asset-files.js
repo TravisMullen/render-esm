@@ -19,7 +19,7 @@ export const createNodeProjectGlob = (fileExtension = 'js', substring = false) =
     substring ? '' : '.', // add period prefix for `.ext`
     fileExtension
       .toLowerCase() // lower the case...
-      .replace(/^./, ''), // remove ext period prefix if passed in by user.
+      .replace(/^\./, ''), // remove ext period prefix if passed in by user.
     substring ? '*' : '' // add `*` for substring search
   ].join('') // combine as one string without breaks or spaces
 )
@@ -34,6 +34,17 @@ export const createNodeProjectGlob = (fileExtension = 'js', substring = false) =
  */
 export const gatherFiles = (fileExtension, substring = false) => (
   globSync(resolve(process.cwd(), createNodeProjectGlob(fileExtension, substring)))
+)
+
+/**
+ * Finds all files by custom glob.
+ * Assumes CWD is root of project (run from `package.json`)
+ *
+ * @param {string} fileExtension File extension
+ * @return {string[]} list of file paths
+ */
+export const gatherFilesFromGlob = customGlob => (
+  globSync(resolve(process.cwd(), customGlob))
 )
 
 /**
