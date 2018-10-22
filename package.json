@@ -28,7 +28,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "pretest": "npm run lint && npm run build",
-    "test": "mocha --require babel-core/register --reporter spec ./test/entry.js --recursive './{src,test}/*.{spec,test}.*'",
+    "test": "mocha --require babel-core/register --reporter spec ./test/__entry.js --recursive './{src,lib,test}/*.{spec,test}.*'",
     "test:purge": "rm ./test/some-test*",
     "lint": "standard --fix './{src,test,bin}/**/*.js' --verbose | snazzy"
   },
@@ -39,7 +39,6 @@
     ],
     "globals": [
       "RenderESM",
-      "bulkRenderESM",
       "expect",
       "loadModule",
       "statSync",
