@@ -2,13 +2,13 @@
 
 import camelcase from 'camelcase'
 
-import BaseRenderESM from './render-esm.js'
+import BaseRenderESM from './base-render-esm.js'
 
 import {
   gatherFiles,
   gatherFilesFromGlob,
   getRawFileRoot
-} from './gather-asset-files.js'
+} from '../lib/gather-asset-files.js'
 
 import {
   validateFindBy

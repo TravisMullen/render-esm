@@ -12,8 +12,8 @@ import camelcase from 'camelcase'
 import {
   isArrayOfStrings
 } from './validate-arguments.js'
-import { loadModule } from './load-module.js'
-import { checkFile } from './check-file.js'
+import { loadModule } from '../lib/load-module.js'
+import { checkFile } from '../lib/check-file.js'
 
 // import runBulkBaseRenderESM from './bulk-ender-esm.js'
 

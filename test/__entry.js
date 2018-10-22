@@ -15,8 +15,8 @@ import {
 } from 'fs'
 import { expect } from 'chai'
 
-import { loadModule } from '../src/load-module.js'
-import { purgeFile } from '../src/check-file.js'
+import { loadModule } from '../lib/load-module.js'
+import { purgeFile } from '../lib/check-file.js'
 
 import RenderESM from '..'
 
