@@ -1,20 +1,19 @@
-/* eslint-disable constructor-super */
 
 import camelcase from 'camelcase'
 
-import BaseRenderESM from './base-render-esm.js'
+import BaseRenderESM from './render-esm.js'
 
 import {
   gatherFiles,
   gatherFilesFromGlob,
   getRawFileRoot
-} from '../lib/gather-asset-files.js'
+} from './gather-asset-files.js'
 
 import {
   validateFindBy
 } from './validate-arguments.js'
 
-class RenderESM extends BaseRenderESM {
+class AdvancedRenderESM extends BaseRenderESM {
   constructor (...args) {
     super(...args)
     const [,, {
@@ -42,7 +41,7 @@ class RenderESM extends BaseRenderESM {
     /** @todo do more accurate absulute and relative path check */
     /** use switch for this? */
     if (glob) {
-      RenderESM
+      AdvancedRenderESM
         .findByGlob(glob)
         .forEach(item => {
           this._targetFiles.add(
@@ -52,7 +51,7 @@ class RenderESM extends BaseRenderESM {
     }
 
     if (extension) {
-      RenderESM
+      AdvancedRenderESM
         .findByExtension(extension)
         .forEach(item => {
           this._targetFiles.add(
@@ -62,7 +61,7 @@ class RenderESM extends BaseRenderESM {
     }
 
     if (substring) {
-      RenderESM
+      AdvancedRenderESM
         .findBySubstring(substring)
         .forEach(item => {
           this._targetFiles.add(
@@ -86,7 +85,7 @@ class RenderESM extends BaseRenderESM {
   }
 
   async _doCustomRender (assetPath) {
-    const exportName = RenderESM.createExportName(assetPath)
+    const exportName = AdvancedRenderESM.createExportName(assetPath)
     if (this.renderedExports[exportName]) {
       throw new Error(`export ${exportName} was already was added.`)
     }
@@ -149,4 +148,4 @@ class RenderESM extends BaseRenderESM {
   }
 }
 
-export default RenderESM
+export default AdvancedRenderESM
