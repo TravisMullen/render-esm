@@ -87,26 +87,18 @@ class AdvancedRenderESM extends BaseRenderESM {
 
   async _doCustomRender (assetPath) {
     const exportName = AdvancedRenderESM.createExportName(assetPath)
-
-    console.time(`rendering:
-      ${assetPath}
-      as export: ${exportName}`)
-    console.log('this._renderFunction', this._renderFunction)
-    // return false
+    if (this.renderedExports[exportName]) {
+      throw new Error(`export ${exportName} was already was added.`)
+    }
+    
     const data = await this._renderFunction(assetPath)
-    this.addExportSync(exportName, data)
 
-    console.timeEnd(`rendering:
-      ${assetPath}
-      as export: ${exportName}`)
+    this.renderedExports[exportName] = data
+    this.addExportSync(exportName, data)
   }
 
   async _doRender (assetPath) {
-    console.time(`rendering:
-        ${assetPath}`)
     await this.addRenderedExport(assetPath)
-    console.time(`rendering:
-        ${assetPath}`)
   }
 
   async init () {
@@ -116,9 +108,7 @@ class AdvancedRenderESM extends BaseRenderESM {
 
     console.time('render modules: ', this._targetFiles.size)
     for (const file of this._targetFiles) {
-      console.time(`add export ${AdvancedRenderESM.createExportName(file)}`)
       await this[renderType](file)
-      console.timeEnd(`add export ${AdvancedRenderESM.createExportName(file)}`)
     }
     console.timeEnd('render modules: ', this._targetFiles.size)
   }
@@ -132,7 +122,6 @@ class AdvancedRenderESM extends BaseRenderESM {
 
   static findByExtension (fileExtension) {
     const found = gatherFiles(fileExtension)
-    console.log('found', found)
     if (validateFindBy(found, fileExtension)) {
       return found
     }

@@ -13,7 +13,7 @@ describe('generate static exports when calling "addRenderedExport"', function ()
   it('should have all exports from "extension" option', async function () {
     const { camelCaseJawn } = await loadModule(renderModule)
 
-    const testInstance = new BulkRenderESM(
+    const testInstance = new AdvanedRenderESM(
       TEST_FILE,
       {
         header: 'Camel Case Jawn!'
@@ -42,7 +42,7 @@ describe('generate static exports when calling "addRenderedExport"', function ()
   it('should have all exports from "substring" option', async function () {
     const { camelCaseJawn } = await loadModule(renderModule)
 
-    const testInstance = new BulkRenderESM(
+    const testInstance = new AdvanedRenderESM(
       TEST_FILE,
       {
         header: 'Camel Case Jawn!'
